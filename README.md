@@ -1,9 +1,12 @@
-### wibi
-Web Interaction Based Intervention
+# wibi
+##### Web Interaction Based Intervention
 
-This application includes data models defined using django ORM. These models are revealed to the client via a REST API for consumption by an Ember SPA.
+<hr>
+This application includes data models defined using django ORM. These models are revealed to the client via a REST API for consumption by an Ember Single Page Application (SPA). The SPA will reside within an in-app web browser. Some buttons will trigger certain actions within the app, such as video recording.
 
-### Directory Layout
+<hr>
+
+#### Directory Layout
 
 ```
 project/
