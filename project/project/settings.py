@@ -42,6 +42,5 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
-STATIC_DIRS = (os.path.join(BASE_DIR, '../static/wibi/dist/assets'),)
-print STATIC_DIRS
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, '../static/wibi/dist'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/wibi/dist/assets'),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'static/wibi/dist'),)
