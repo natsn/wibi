@@ -19,15 +19,13 @@ project/
     └── ...
 ```
 
-### Documentation
-
-#### Backend
+#### Backend Docs
  - [Django REST](http://www.django-rest-framework.org/)
  - [Gunicorn](http://gunicorn.org/#docs)
  - [Python Interface to Redis](https://pypi.python.org/pypi/redis/)
  - [Markdown](http://pythonhosted.org//Markdown/)
 
-#### Frontend
+#### Frontend Docs
  - [Ember API](http://emberjs.com/api/)
  - [Bootstrap](http://getbootstrap.com/)
 
