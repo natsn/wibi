@@ -10,16 +10,16 @@ This application includes data models defined using django ORM. These models are
 
 ```
 project/
-├── static/                 emberjs
+├── static/                 emberjs in here under wibi/
 ├── apps/
-│   ├── main/               url --> view --> emberjs
 │   ├── hv_curriculum/      models --> REST API
 │   ├── pals_curriculum/    models --> REST API
 │   ├── userdata/           models --> REST API
 │   └── videoplay/          models --> redis --> REST API
 └── project/
     ├── settings.py
-    └── ...
+    ├── ...
+    └── views.py            >> delivers index.html ember app from dist/
 ```
 
 #### Backend Docs
