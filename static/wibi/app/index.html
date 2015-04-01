@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,20 +7,24 @@
     <title>Wibi</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    {% verbatim %}
     {{content-for 'head'}}
+    {% endverbatim %}
 
-    <link rel="stylesheet" href="assets/vendor.css">
-    <link rel="stylesheet" href="assets/wibi.css">
-
+    <link rel="stylesheet" href="{% static 'vendor.css' %}">
+    <link rel="stylesheet" href="{% static 'wibi.css' %}">
+    {% verbatim %}
     {{content-for 'head-footer'}}
+    {% endverbatim %}
   </head>
   <body>
+    {% verbatim %}
     {{content-for 'body'}}
-
-    <script src="assets/vendor.js"></script>
-    <script src="assets/wibi.js"></script>
-
+    {% endverbatim %}
+    <script src="{% static 'vendor.js' %}"></script>
+    <script src="{% static 'wibi.js' %}"></script>
+    {% verbatim %}
     {{content-for 'body-footer'}}
+    {% endverbatim %}
   </body>
 </html>

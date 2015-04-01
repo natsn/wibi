@@ -22,18 +22,11 @@ class Page(models.Model, TranslatedModelMixin):
     section = models.ForeignKey(Section)
     title = models.CharField(max_length=255)
     html = models.TextField()
-    image = models.FileField(upload_to='page_images')
-    video = models.FileField(upload_to='page_videos')
-    audio = models.FileField(upload_to='page_audio')
-    display_coach_welcome_video = models.BooleanField(default=False, help_text="By checking this the participant will see their coach's welcome video if available.")
-
+    display_trainer_welcome_video = models.BooleanField(default=False, help_text="By checking this the coach will see their trainer's welcome video if available.")
     es_title = models.CharField(max_length=255)
     es_html  = models.TextField()
-    es_image = models.FileField(upload_to='page_images')
-    es_video = models.FileField(upload_to='page_videos')
-    es_audio = models.FileField(upload_to='page_audio')
     language_code = 'en'
-    translated_fields = ['title', 'html', 'image', 'video', 'audio']
+    translated_fields = ['title', 'html']
 
 class Tip(models.Model, TranslatedModelMixin):
     text = models.CharField(max_length=255)
