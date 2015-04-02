@@ -17,8 +17,14 @@ INSTALLED_APPS = (
     'videoplay',
     'userdata',
     'utils',
+    'rest_framework',
 )
-
+REST_FRAMEWORK = {
+# http://www.django-rest-framework.org/api-guide/permissions/
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

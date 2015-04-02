@@ -28,6 +28,9 @@ class Page(models.Model, TranslatedModelMixin):
     language_code = 'en'
     translated_fields = ['title', 'html']
 
+class Media(models.Model):
+    file = models.FileField(upload_to = u'hv_files/')
+
 class Tip(models.Model, TranslatedModelMixin):
     text = models.CharField(max_length=255)
     es_text = models.CharField(max_length=255)
