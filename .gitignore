@@ -1,5 +1,6 @@
 project/db.sqlite3
-
+.floo
+.flooignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

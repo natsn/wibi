@@ -12,12 +12,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'hv_curriculum',
-    'pals_curriculum',
+    'curriculum',
     'videoplay',
     'userdata',
     'utils',
     'rest_framework',
+    'froala_editor',
 )
 REST_FRAMEWORK = {
 # http://www.django-rest-framework.org/api-guide/permissions/

@@ -6,6 +6,18 @@ This application includes data models defined using django ORM. These models are
 
 <hr>
 
+### Installation
+You should use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) and [pip](https://pypi.python.org/pypi/pip).
+
+You will need [node](https://nodejs.org/) to install ember-cli.
+
+ 1. pip install -r requirements.txt
+ 2. ./manage.py syncdb
+ 3. ./manage.py migrate
+ 4. npm install -g ember-cli
+ 5. cd project/static/wibi && ember build
+ 6. ./manage.py runserver
+
 #### Directory Layout
 
 ```
