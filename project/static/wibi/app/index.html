@@ -1,0 +1,34 @@
+{% load staticfiles %}
+
+<!-- NOTE: This file is processed by django template
+           engine before getting sent to the browser -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Wibi</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% verbatim %}
+    {{content-for 'head'}}
+    {% endverbatim %}
+
+    <link rel="stylesheet" href="{% static 'vendor.css' %}">
+    <link rel="stylesheet" href="{% static 'wibi.css' %}">
+    {% verbatim %}
+    {{content-for 'head-footer'}}
+    {% endverbatim %}
+  </head>
+  <body>
+    {% verbatim %}
+    {{content-for 'body'}}
+    {% endverbatim %}
+    <script src="{% static 'vendor.js' %}"></script>
+    <script src="{% static 'wibi.js' %}"></script>
+    {% verbatim %}
+    {{content-for 'body-footer'}}
+    {% endverbatim %}
+  </body>
+</html>

@@ -1,0 +1,23 @@
+body{
+    background: yellow;
+    color:red;
+    font-family: sans-serif;
+}
+
+nav ul{
+    padding:0px;
+    li{
+        list-style: none;
+        display: inline;
+        margin-right: 1em;
+    }
+    a {
+        color:red;
+    }
+}
+#main{
+    max-width: 960px;
+    margin:0 auto;
+    background: lightyellow;
+    padding:1em;
+}
