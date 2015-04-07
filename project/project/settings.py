@@ -12,10 +12,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'curriculum',
-    'videoplay',
-    'userdata',
-    'utils',
     'rest_framework',
     'froala_editor',
 )
