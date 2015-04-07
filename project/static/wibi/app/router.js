@@ -6,7 +6,8 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource('message', function() {});
+  this.route('message', function() {});
+  this.route('user', function() {});
 });
 
 
@@ -18,6 +19,6 @@ export default Router;
     routes fetch models
     router maps urls
     model returns the JSON
-    the controlle(last step before the template) r decorates it
+    the controller (last step before the template) and decorates it
 
 */

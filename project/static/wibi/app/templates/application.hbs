@@ -4,9 +4,10 @@
         <ul>
         {{!-- TODO, Conditional navigation --}}
             <li><<a href="#">PALS</a></li>
-            {{!-- <li><a href="#">Messages</a></li> --}}
-            <li>{{#link-to 'messages' message-object}}Messages{{/link-to}}</li>
+            <li>{{#link-to 'message'}}Messages{{/link-to}}</li>
             <li><a href="#">Plan</a></li>
+            <li><a href="#">{{#link-to 'user'}}Users{{/link-to}}</a></li>
+            {{!-- List some users! --}}
             <li><a href="#">Videos</a></li>
         </ul>
     </nav>
