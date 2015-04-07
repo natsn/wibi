@@ -12,20 +12,13 @@ You should use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/
 You will need [node](https://nodejs.org/) to install ember-cli.
 
  1. `pip install -r requirements.txt`
- 2. `./manage.py syncdb`
- 3. `./manage.py migrate`
- 4. `npm install -g ember-cli`
- 5. `cd project/static/wibi && ember build && cd ../../`
- 6. `./manage.py runserver`
+ 2. Make an sqlite3 database for development `./manage.py syncdb`
+ 3. Install ember-cli `npm install -g ember-cli`
+ 4. Dive into the Ember app `cd project/static/wibi`
+ 5. Install requirements and build `npm install && bower install && ember build`
+ 6. Then go up a couple directories and `./manage.py runserver`
 
 #### Directory Layout
-
-
-
-
-
-
-
 
 
 ```
