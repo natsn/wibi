@@ -1,9 +1,8 @@
-import DS from 'ember-data';
+import DRFAdapter from './drf';
 
-export default DS.RESTAdapter.extend({
-  coalesceFindRequests: true,
-  namespace: 'api'
+export default DRFAdapter.extend({
 });
+
 
 //test!!!
 // I see you! :) :)

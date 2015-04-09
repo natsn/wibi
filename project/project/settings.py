@@ -43,6 +43,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+# APPEND_SLASH = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/wibi/dist/assets'),)
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'static/wibi/dist'),)
