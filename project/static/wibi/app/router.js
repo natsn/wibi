@@ -7,12 +7,12 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('message', function() {});
-  this.route('user', function() {});
+//this.resource('photo', { path: '/photos/:photo_id' });
+  this.resource('user', { path: '/users/:user_id'}, function() {});
 });
 
 
 export default Router;
-
 
 /*
 
