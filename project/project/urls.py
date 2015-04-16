@@ -1,18 +1,15 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework import routers
-
 from project import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 
-
 urlpatterns = patterns('',
 		url(r'^api/tip/(?P<id>[0-9]+)', 'project.views.tip', name='tip'),
     url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^testzorz/', 'project.views.testzorz', name='testzorz'),
     url(r'^.*$', 'project.views.home', name='home'),
 )
