@@ -2,35 +2,34 @@
 ##### Web Interaction Based Intervention
 
 <hr>
-This application includes data models defined using django ORM. These models are revealed to the client via a REST API for consumption by an Ember Single Page Application (SPA). The SPA will reside within an in-app web browser. Some buttons will trigger certain actions within the app, such as video recording.
+This application includes data models defined using django ORM. These models are revealed to the client via a REST API for consumption by an Angular Single Page Application (SPA). The SPA will reside within an in-app web browser. Some buttons will trigger certain actions within the app, such as video recording.
 
 <hr>
 
 ### Installation
 You should use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) and [pip](https://pypi.python.org/pypi/pip).
 
-You will need [node](https://nodejs.org/) to install ember-cli.
+You will need [node](https://nodejs.org/) and [npm](https://www.npmjs.com/)
 
  1. `pip install -r requirements.txt`
  2. Make an sqlite3 database for development `./manage.py syncdb`
- 3. Install ember-cli `npm install -g ember-cli`
- 4. Dive into the Ember app `cd project/static/wibi`
- 5. Install requirements and build `npm install && bower install && ember build`
- 6. Then go up a couple directories and `./manage.py runserver`
+ 3. Dive into the Angular app `cd project/static/wibi`
+ 4. Install requirements and build `npm install && bower install`
+ 5. Then go up a couple directories and `./manage.py runserver`
 
 #### Directory Layout
 
 
 ```
 project/
-├── static/                 emberjs in here under wibi/
+├── static/                 Angular.js in here under wibi/
 ├── utils/                  helpful mixins, middleware etc.
 └── project/
     ├── models.py           models --> REST API
     ├── serializers.py      For the django REST Framework
     ├── settings.py         Django settings
-    ├── urls.py             catchall for ember minus /api/ and /admin/
-    ├── views.py            >> delivers index.html ember app from dist/
+    ├── urls.py             catchall for Angular minus /api/ and /admin/
+    ├── views.py            >> delivers index.html Angular app from dist/
     └── wsgi.py             server connection setup
 ```
 
@@ -41,7 +40,5 @@ project/
  - [Markdown](http://pythonhosted.org//Markdown/)
 
 #### Frontend Docs
- - [Ember API](http://emberjs.com/api/)
+ - [Angular API](https://docs.angularjs.org/api)
  - [Bootstrap](http://getbootstrap.com/)
-
-
