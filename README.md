@@ -1,3 +1,5 @@
+![Logo](wibi_logo.png?raw=true)
+
 # wibi
 ##### Web Interaction Based Intervention
 
