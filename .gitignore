@@ -1,3 +1,5 @@
+project/static/wibi/public
+project/static/wibi/app/bower_components
 project/db.sqlite3
 .floo
 .flooignore

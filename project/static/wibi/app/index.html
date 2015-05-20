@@ -6,29 +6,33 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <base href="/"></base>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Wibi</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% verbatim %}
-    {{content-for 'head'}}
-    {% endverbatim %}
 
-    <link rel="stylesheet" href="{% static 'vendor.css' %}">
-    <link rel="stylesheet" href="{% static 'wibi.css' %}">
-    {% verbatim %}
-    {{content-for 'head-footer'}}
-    {% endverbatim %}
+
+    <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-route/angular-route.min.js' %}"></script>
+    <script src="{% static 'app.js' %}"></script>
+    <script src="{% static 'router.js' %}"></script>
+    <script src="{% static 'controllers/home.js' %}"></script>
+
   </head>
-  <body>
-    {% verbatim %}
-    {{content-for 'body'}}
-    {% endverbatim %}
-    <script src="{% static 'vendor.js' %}"></script>
-    <script src="{% static 'wibi.js' %}"></script>
-    {% verbatim %}
-    {{content-for 'body-footer'}}
-    {% endverbatim %}
+  <body ng-app="wibiAngApp">
+    <ng-view></ng-view> <!--route config will fill this in with homeCtrl or any other Ctrl based on current page as defined in router.js-->
+
+
+
+
+
+
+
+
+
+    biio==
+
   </body>
 </html>
