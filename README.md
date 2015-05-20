@@ -11,10 +11,10 @@ You should use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/
 
 You will need [node](https://nodejs.org/) and [npm](https://www.npmjs.com/)
 
- 1. `pip install -r requirements.txt`
+ 1. Install backend requirements: `pip install -r requirements.txt`
  2. Make an sqlite3 database for development `./manage.py syncdb`
  3. Dive into the Angular app `cd project/static/wibi`
- 4. Install requirements and build `npm install && bower install`
+ 4. Install frontend requirements: `npm install && bower install` (this will create `app/bower_components` and `node_modules/`)
  5. Then go up a couple directories and `./manage.py runserver`
 
 #### Directory Layout
