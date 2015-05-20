@@ -1,24 +1,7 @@
-import Ember from 'ember';
-import config from './config/environment';
-
-var Router = Ember.Router.extend({
-  location: config.locationType
-});
-
-Router.map(function() {
-  this.route('message', function() {});
-//this.resource('photo', { path: '/photos/:photo_id' });
-  this.resource('user', { path: '/users/:user_id'}, function() {});
-});
-
-
-export default Router;
-
-/*
-
-    routes fetch models
-    router maps urls
-    model returns the JSON
-    the controller (last step before the template) and decorates it
-
-*/
+angular.module('wibi-routes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    $routeProvider.when('/', {
+      templateUrl: '/templates/application.html',
+      controller: 'homeCtrl'
+    })
+    $locationProvider.html5Mode(true); //enables url change abilities without refreshing browser
+}]);
