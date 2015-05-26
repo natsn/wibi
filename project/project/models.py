@@ -18,6 +18,7 @@ class Agency(models.Model):
     name = models.CharField(max_length=500)
     class Meta:
         verbose_name_plural = "Agencies"
+        
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
