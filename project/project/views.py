@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from project.serializers import *
@@ -11,7 +12,6 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -27,12 +27,12 @@ class LevelViewSet(viewsets.ModelViewSet):
     queryset = Level.objects.all()
     serializer_class = LevelSerializer
 
-class NoteViewSet(viewsets.ModelViewSet):
+class VideoNoteViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows note to be viewed or edited.
     """
-    queryset = Note.objects.all()
-    serializer_class = NoteSerializer
+    queryset = VideoNote.objects.all()
+    serializer_class = VideoNoteSerializer
 
 class ErrorViewSet(viewsets.ModelViewSet):
     """
@@ -146,10 +146,8 @@ class ResponseViewSet(viewsets.ModelViewSet):
     queryset = Response.objects.all()
     serializer_class = ResponseSerializer  
 
-
-
 def home(request):
-    return render(request,'index.html')
+    return render_to_response('index.html', RequestContext(request))
 
 def tip(request, id):
     tipOutput  = Tip.objects.filter(id=id)

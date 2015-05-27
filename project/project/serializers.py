@@ -17,9 +17,9 @@ class LevelSerializer(serializers.HyperlinkedModelSerializer):
  		model = Level
  		fields = ('title', 'es_title', 'position')
 
-class NoteSerializer(serializers.HyperlinkedModelSerializer):
+class VideoNoteSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
- 		model = Note
+ 		model = VideoNote
  		fields = ('user', 'video', 'mark', 'comment')
 
 class ErrorSerializer(serializers.HyperlinkedModelSerializer):

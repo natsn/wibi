@@ -6,7 +6,7 @@ from project import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'note', views.NoteViewSet)
+router.register(r'note', views.VideoNoteViewSet)
 router.register(r'level', views.LevelViewSet)
 router.register(r'error', views.ErrorViewSet)
 router.register(r'star', views.StarViewSet)

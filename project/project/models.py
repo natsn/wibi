@@ -8,7 +8,7 @@ class VideoUpload(models.Model):
     video = models.FileField(upload_to='video_uploads')
     created_at = models.DateTimeField(auto_now=True)
 
-class Note(models.Model):
+class VideoNote(models.Model):
     user = models.ForeignKey(User)
     video = models.ForeignKey(VideoUpload)
     mark = models.IntegerField()
