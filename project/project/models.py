@@ -8,7 +8,7 @@ class VideoUpload(models.Model):
     video = models.FileField(upload_to='video_uploads')
     created_at = models.DateTimeField(auto_now=True)
 
-class Note(models.Model):
+class VideoNote(models.Model):
     user = models.ForeignKey(User)
     video = models.ForeignKey(VideoUpload)
     mark = models.IntegerField()
@@ -18,6 +18,7 @@ class Agency(models.Model):
     name = models.CharField(max_length=500)
     class Meta:
         verbose_name_plural = "Agencies"
+        
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
