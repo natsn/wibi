@@ -18,7 +18,7 @@ class Agency(models.Model):
     name = models.CharField(max_length=500)
     class Meta:
         verbose_name_plural = "Agencies"
-        
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
@@ -39,7 +39,7 @@ class Profile(models.Model):
 
     TIMEZONES = [(tz,tz) for tz in pytz.all_timezones]
     timezone = models.CharField(max_length=100, choices=TIMEZONES, default='US/Pacific')
-    def is_with(self, profile):
+    def belongs_to(self, profile):
         """
             This function determines if a user is associated with another user.
             It does this by examining the tree structure of Profile. For
@@ -54,11 +54,11 @@ class Profile(models.Model):
                       P2   P3
 
             Usage:
-                    P1.is_with(C1)
+                    P1.belongs_to(C1)
                     >>> True
-                    P2.is_with(P3)
+                    P2.belongs_to(P3)
                     >>> False
-                    P3.is_with(T)
+                    P3.belongs_to(T)
                     >>> True
         """
         me = self
@@ -105,7 +105,12 @@ class Error(models.Model):
 class ClinicalNote(models.Model):
     pass
 
+class Curriculum(models.Model):
+    title = models.CharField(max_length=255)
+    for_participant = models.BooleanField(default=False, help_text='Viewable by the participant.')
+
 class Level(models.Model, TranslatedModelMixin):
+    curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)
     es_title = models.CharField(max_length=255)
     position = models.IntegerField(default=1, help_text='What level/session is this?')
@@ -115,12 +120,14 @@ class Level(models.Model, TranslatedModelMixin):
         ordering = ('position',)
 
 class Section(models.Model, TranslatedModelMixin):
+    curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)
     es_title = models.CharField(max_length=255)
     language_code = 'en'
     translated_fields = ['title']
 
 class Page(models.Model, TranslatedModelMixin):
+    curriculum = models.ForeignKey(Curriculum)
     level = models.ForeignKey(Level)
     section = models.ForeignKey(Section)
     title = models.CharField(max_length=255)
@@ -143,6 +150,7 @@ class Media(models.Model):
     file = models.FileField(upload_to = u'uploads/')
 
 class Tip(models.Model, TranslatedModelMixin):
+    curriculum = models.ForeignKey(Curriculum)
     text = models.CharField(max_length=255)
     es_text = models.CharField(max_length=255)
     language_code = 'en'
@@ -194,117 +202,6 @@ class Response(models.Model):
     attempt = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now=True)
 
-    @property
-    def selected(self):
-        if len(self.choices > 0):
-            choice_pks = self.choices.split(',')
-            choices = Choice.objects.filter(pk__in=choice_pks.split(','))
-            return choices
-        else:
-            return None
-
-    @property
-    def correct(self):
-        all_correct = False
-        correct_answers = Choice.objects.filter(question=self.question, correct=True)
-        if list(self.selected) == list(correct_answers):
-            all_correct = True
-        return all_correct
-
-"""
-    Home Visitor Curriculum.
-"""
-class HVTip(Tip):
-    class Meta:
-        verbose_name = "Coach Tip"
-        verbose_name_plural = "Coach Tips"
-class HVCustomPage(CustomPage):
-    class Meta:
-        verbose_name = "Coach CustomPage"
-        verbose_name_plural = "Coach CustomPages"
-class HVLevel(Level):
-    class Meta:
-        verbose_name = "Coach Level"
-        verbose_name_plural = "Coach Levels"
-class HVSection(Section):
-    class Meta:
-        verbose_name = "Coach Section"
-        verbose_name_plural = "Coach Sections"
-
-class HVPage(models.Model, TranslatedModelMixin):
-    level = models.ForeignKey(HVLevel)
-    section = models.ForeignKey(HVSection)
-    title = models.CharField(max_length=255)
-    html = models.TextField()
-    display_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
-    es_title = models.CharField(max_length=255)
-    es_html  = models.TextField()
-    language_code = 'en'
-    translated_fields = ['title', 'html']
-    class Meta:
-        verbose_name = "Coach Page"
-        verbose_name_plural = "Coach Pages"
-
-class HVEdge(models.Model):
-    u = models.ForeignKey(HVPage,related_name='hv_from_page')
-    v = models.ForeignKey(HVPage,related_name='hv_to_page')
-    class Meta:
-        verbose_name = "Coach Edge"
-        verbose_name_plural = "Coach Edges"
-
-class HVPermission(models.Model):
-    page = models.ForeignKey(HVPage)
-    user = models.ForeignKey(User)
-    class Meta:
-        verbose_name = "Coach Permission"
-        verbose_name_plural = "Coach Permissions"
-
-class HVQuestion(models.Model, TranslatedModelMixin):
-    page = models.ForeignKey(HVPage)
-    text = models.CharField(max_length=1000,blank=False)
-    TYPES = (
-        ('ra', 'radio'),
-        ('ch', 'checkbox'),
-        ('tx', 'text'),
-    )
-    type = models.CharField(max_length=2,choices=TYPES)
-    is_scoreable = models.BooleanField(default=True,help_text="Will the answer to this question be scored?")
-    position = models.IntegerField()
-
-    es_text = models.CharField(max_length=1000,blank=False)
-    language_code = 'en'
-    translated_fields = ['text']
-    class Meta:
-        ordering = ['position']
-        verbose_name = "Coach Question"
-        verbose_name_plural = "Coach Questions"
-
-class HVChoice(models.Model, TranslatedModelMixin):
-    question = models.ForeignKey(HVQuestion)
-    text = models.CharField(max_length=1000,blank=False)
-    feedback = models.CharField(max_length=1000,blank=True)
-    correct = models.BooleanField(blank=False,default=False,help_text="Is this a correct answer?")
-    position = models.IntegerField()
-
-    es_text = models.CharField(max_length=1000,blank=False)
-    es_feedback = models.CharField(max_length=1000,blank=True)
-    language_code = 'en'
-    translated_fields = ['text']
-    class Meta:
-        ordering = ['position']
-        verbose_name = "Coach Choice"
-        verbose_name_plural = "Coach Choices"
-
-class HVResponse(models.Model):
-    user = models.ForeignKey(User)
-    question = models.ForeignKey(HVQuestion)
-    choices = models.CommaSeparatedIntegerField(max_length=255)
-    free = models.TextField()
-    attempt = models.IntegerField(default=1)
-    created = models.DateTimeField(auto_now=True)
-    class Meta:
-        verbose_name = "Coach Response"
-        verbose_name_plural = "Coach Responses"
     @property
     def selected(self):
         if len(self.choices > 0):

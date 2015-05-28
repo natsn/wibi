@@ -13,7 +13,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'project',
     'rest_framework',
-    'froala_editor',
+    'django_extensions',
 )
 REST_FRAMEWORK = {
 # http://www.django-rest-framework.org/api-guide/permissions/
