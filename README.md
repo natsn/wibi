@@ -36,7 +36,7 @@ project/
 ```
 
 #### Backend Docs
- - Our Entity Relationship Diagram ([four page PDF download](erd.pdf))
+ - Our Entity Relationship Diagram ([Printable PDF](erd.pdf) and [Large PNG](erd.png))
  - [Django REST](http://www.django-rest-framework.org/)
  - [Gunicorn](http://gunicorn.org/#docs)
  - [Python Interface to Redis](https://pypi.python.org/pypi/redis/)
