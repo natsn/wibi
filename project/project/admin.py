@@ -1,6 +1,6 @@
 from django.contrib import admin
 from pagedown.widgets import AdminPagedownWidget
-from project.models import Media, VideoUpload, VideoNote, Agency, Profile, Message, Star, PageVisit, Error, ClinicalNote, ContactLog, Curriculum, Level, Section, Page, Edge, Permission, Tip, CustomPage, Question, Choice, Response
+from project.models import *
 from django.db import models
 
 class MediaAdmin(admin.ModelAdmin):
@@ -117,19 +117,14 @@ class PageAdmin(admin.ModelAdmin):
         'display_welcome_video',
         'es_title',
         'es_markdown',
+        'nxt',
+        'prv',
     )
     list_filter = ('curriculum', 'level', 'section', 'display_welcome_video')
     formfield_overrides = {
         models.TextField: {'widget': AdminPagedownWidget },
     }
 admin.site.register(Page, PageAdmin)
-
-
-class EdgeAdmin(admin.ModelAdmin):
-    list_display = (u'id', 'u', 'v')
-    list_filter = ('u', 'v')
-admin.site.register(Edge, EdgeAdmin)
-
 
 class PermissionAdmin(admin.ModelAdmin):
     list_display = (u'id', 'page', 'user')
@@ -181,6 +176,6 @@ admin.site.register(Choice, ChoiceAdmin)
 
 
 class ResponseAdmin(admin.ModelAdmin):
-    list_display = (u'id', 'user', 'question', 'choices', 'free', 'attempt')
+    list_display = (u'id', 'user', 'question', 'choice_pks', 'text', 'attempt')
     list_filter = ('user', 'question')
 admin.site.register(Response, ResponseAdmin)

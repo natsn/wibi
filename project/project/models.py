@@ -151,7 +151,7 @@ class Level(models.Model, TranslatedModelMixin, TitleMixin):
     language_code = 'en'
     translated_fields = ['title']
     class Meta:
-        ordering = ('position',)
+        ordering = ['position']
 
 class Section(models.Model, TranslatedModelMixin, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
@@ -169,12 +169,10 @@ class Page(models.Model, TranslatedModelMixin, TitleMixin):
     display_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
     es_title = models.CharField(max_length=255)
     es_markdown  = models.TextField()
+    prv = models.ForeignKey('self',related_name='previous_page')
+    nxt = models.ForeignKey('self',related_name='next_page')
     language_code = 'en'
     translated_fields = ['title', 'markdown']
-
-class Edge(models.Model):
-    u = models.ForeignKey(Page,related_name='from_page')
-    v = models.ForeignKey(Page,related_name='to_page')
 
 class Permission(models.Model, TrackingFieldsMixin):
     page = models.ForeignKey(Page)
@@ -228,8 +226,8 @@ class Choice(models.Model, TranslatedModelMixin):
 class Response(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     question = models.ForeignKey(Question)
-    choices = models.CommaSeparatedIntegerField(max_length=255)
-    free = models.TextField()
+    choice_pks = models.CommaSeparatedIntegerField(max_length=255)
+    text = models.TextField()
     attempt = models.IntegerField(default=1)
 
     @property

@@ -60,12 +60,7 @@ class SectionSerializer(serializers.HyperlinkedModelSerializer):
 class PageSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = Page
- 		fields = ('level', 'section', 'title', 'markdown', 'display_welcome_video', 'es_title', 'es_markdown')
-
-class EdgeSerializer(serializers.HyperlinkedModelSerializer):
- 	class Meta:
- 		model = Edge
- 		fields = ('u', 'v')
+ 		fields = ('level', 'section', 'title', 'markdown', 'display_welcome_video', 'es_title', 'es_markdown','prv','nxt')
 
 class PermissionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
