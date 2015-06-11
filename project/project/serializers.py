@@ -50,7 +50,7 @@ class AgencySerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = Profile
- 		fields = ('user', 'agency', 'higher_up', 'language', 'type', 'coach_welcome_video', 'timezone')
+ 		fields = ('user', 'agency', 'higher_up', 'language', 'type', 'media', 'timezone')
 
 class SectionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
@@ -60,12 +60,7 @@ class SectionSerializer(serializers.HyperlinkedModelSerializer):
 class PageSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = Page
- 		fields = ('level', 'section', 'title', 'html', 'display_welcome_video', 'es_title', 'es_html')
-
-class EdgeSerializer(serializers.HyperlinkedModelSerializer):
- 	class Meta:
- 		model = Edge
- 		fields = ('u', 'v')
+ 		fields = ('level', 'section', 'title', 'markdown', 'display_coach_welcome_video', 'es_title', 'es_markdown','prv','nxt')
 
 class PermissionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
@@ -85,7 +80,7 @@ class TipSerializer(serializers.HyperlinkedModelSerializer):
 class CustomPageSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = CustomPage
- 		fields = ('html', 'es_html')
+ 		fields = ('markdown', 'es_markdown')
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:

@@ -35,8 +35,10 @@ project/
     └── wsgi.py             server connection setup
 ```
 
+#### Schema Design
+![Schema](project/erd.png?raw=true)
+
 #### Backend Docs
- - Our Entity Relationship Diagram ([Printable PDF](erd.pdf) and [Large PNG](erd.png))
  - [Django REST](http://www.django-rest-framework.org/)
  - [Gunicorn](http://gunicorn.org/#docs)
  - [Python Interface to Redis](https://pypi.python.org/pypi/redis/)

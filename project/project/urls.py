@@ -16,7 +16,6 @@ router.register(r'agency', views.AgencyViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'section', views.SectionViewSet)
 router.register(r'page', views.PageViewSet)
-router.register(r'edge', views.EdgeViewSet)
 router.register(r'permission', views.PermissionViewSet)
 router.register(r'media', views.PermissionViewSet)
 router.register(r'tip', views.TipViewSet)
@@ -26,7 +25,6 @@ router.register(r'choice', views.ChoiceViewSet)
 router.register(r'response', views.ResponseViewSet)
 
 urlpatterns = patterns('',
-	url(r'^api/tip/(?P<id>[0-9]+)', 'project.views.tip', name='tip'),
     url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^.*$', 'project.views.home', name='home'),
