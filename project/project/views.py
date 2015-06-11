@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from project.serializers import *
-from django.http import HttpResponse 
+from django.http import HttpResponse
 from project.models import *
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -130,30 +130,21 @@ class QuestionViewSet(viewsets.ModelViewSet):
     API endpoint that allows question to be viewed or edited.
     """
     queryset = Question.objects.all()
-    serializer_class = QuestionSerializer   
+    serializer_class = QuestionSerializer
 
 class ChoiceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows choice to be viewed or edited.
     """
     queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer   
+    serializer_class = ChoiceSerializer
 
 class ResponseViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows response to be viewed or edited.
     """
     queryset = Response.objects.all()
-    serializer_class = ResponseSerializer  
+    serializer_class = ResponseSerializer
 
 def home(request):
     return render_to_response('index.html', RequestContext(request))
-
-def tip(request, id):
-    tipOutput  = Tip.objects.filter(id=id)
-    if len(tipOutput) != 0:
-        jsonOutput = '{"id": %d, "text": "%s", "es_text": "%s"}' %(tipOutput[0].id, tipOutput[0].text, tipOutput[0].es_text)
-        return HttpResponse(jsonOutput)
-    else:
-        errorOutput = '{}'
-        return HttpResponse(errorOutput)

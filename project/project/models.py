@@ -119,6 +119,9 @@ class Level(models.Model, TranslatedModelMixin):
     class Meta:
         ordering = ('position',)
 
+    def __str__(self):
+        return self.title
+
 class Section(models.Model, TranslatedModelMixin):
     curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)

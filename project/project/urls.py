@@ -26,7 +26,6 @@ router.register(r'choice', views.ChoiceViewSet)
 router.register(r'response', views.ResponseViewSet)
 
 urlpatterns = patterns('',
-	url(r'^api/tip/(?P<id>[0-9]+)', 'project.views.tip', name='tip'),
     url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^.*$', 'project.views.home', name='home'),
