@@ -3,18 +3,33 @@ from django.db import models
 from utils.mixins import TranslatedModelMixin
 import pytz
 
-class VideoUpload(models.Model):
+# Field Mixins
+
+class ParticipantCoachFieldsMixin(models,Model):
+    coach = models.ForeignKey(User, related_name='coach')
+    participant = models.ForeignKey(User, related_name='participant')
+    class Meta:
+        abstract = True
+
+class TrackingFieldsMixin(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
+
+# General Models
+
+class VideoUpload(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     video = models.FileField(upload_to='video_uploads')
-    created_at = models.DateTimeField(auto_now=True)
 
-class VideoNote(models.Model):
+class VideoNote(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     video = models.ForeignKey(VideoUpload)
     mark = models.IntegerField()
     comment = models.CharField(max_length=255)
 
-class Agency(models.Model):
+class Agency(models.Model, TrackingFieldsMixin):
     name = models.CharField(max_length=500)
     class Meta:
         verbose_name_plural = "Agencies"
@@ -22,6 +37,7 @@ class Agency(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
+    media = models.ForeignKey(Media, help_text="Upload Coach Welcome Video as media, then link it here.")
     higher_up = models.ForeignKey('self', blank=True, null=True)
     LANGS = (
         ('en', 'English'),
@@ -35,8 +51,6 @@ class Profile(models.Model):
         ('T', 'Trainer/Consultant'),
     )
     type = models.CharField(max_length=1, choices=TYPES, default='P')
-    coach_welcome_video = models.FileField(upload_to = u'coach_video/', max_length=255, null=True, blank=True)
-
     TIMEZONES = [(tz,tz) for tz in pytz.all_timezones]
     timezone = models.CharField(max_length=100, choices=TIMEZONES, default='US/Pacific')
     def belongs_to(self, profile):
@@ -47,7 +61,7 @@ class Profile(models.Model):
             T is with P3, C2 is not with P1, etc.
 
                  T
-                / \___
+                / \____
                C1      \
                |        C2
                P1      /  \
@@ -79,7 +93,7 @@ class Profile(models.Model):
 
         return False
 
-class Message(models.Model):
+class Message(models.Model, TrackingFieldsMixin):
     recipient = models.ForeignKey(User,related_name='msg_recipient')
     sender = models.ForeignKey(User,related_name='msg_sender')
     text = models.TextField()
@@ -87,26 +101,28 @@ class Message(models.Model):
     def __unicode__(self):
         return self.text
 
-class Star(models.Model):
+class Star(models.Model, TrackingFieldsMixin):
     value = models.IntegerField()
     recipient = models.ForeignKey(User,related_name='str_recipient')
     sender = models.ForeignKey(User,related_name='str_sender')
 
-class PageVisit(models.Model):
+class PageVisit(models.Model, TrackingFieldsMixin):
     user = models.IntegerField(null=True)
     path = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now=True)
 
-class Error(models.Model):
+class Error(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     text = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
 
-class ClinicalNote(models.Model):
-    pass
+class ClinicalNote(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin):
+    note = models.TextField(help_text='This is a general note')
+
+class ContactLog(models.Model)
+
 
 class Curriculum(models.Model):
     title = models.CharField(max_length=255)
+    agency = models.ForeignKey(Agency)
     for_participant = models.BooleanField(default=False, help_text='Viewable by the participant.')
 
 class Level(models.Model, TranslatedModelMixin):
@@ -145,11 +161,11 @@ class Edge(models.Model):
     u = models.ForeignKey(Page,related_name='from_page')
     v = models.ForeignKey(Page,related_name='to_page')
 
-class Permission(models.Model):
+class Permission(models.Model, TrackingFieldsMixin):
     page = models.ForeignKey(Page)
     user = models.ForeignKey(User)
 
-class Media(models.Model):
+class Media(models.Model, TrackingFieldsMixin):
     file = models.FileField(upload_to = u'uploads/')
 
 class Tip(models.Model, TranslatedModelMixin):
@@ -197,13 +213,12 @@ class Choice(models.Model, TranslatedModelMixin):
     class Meta:
         ordering = ['position']
 
-class Response(models.Model):
+class Response(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     question = models.ForeignKey(Question)
     choices = models.CommaSeparatedIntegerField(max_length=255)
     free = models.TextField()
     attempt = models.IntegerField(default=1)
-    created = models.DateTimeField(auto_now=True)
 
     @property
     def selected(self):
