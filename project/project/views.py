@@ -90,13 +90,6 @@ class PageViewSet(viewsets.ModelViewSet):
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 
-class EdgeViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows edge to be viewed or edited.
-    """
-    queryset = Edge.objects.all()
-    serializer_class = EdgeSerializer
-
 class PermissionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows permission to be viewed or edited.

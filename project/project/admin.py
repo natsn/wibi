@@ -89,8 +89,7 @@ admin.site.register(ContactLog, ContactLogAdmin)
 
 
 class CurriculumAdmin(admin.ModelAdmin):
-    list_display = ('title', u'id', 'agency', 'for_participant')
-    list_filter = ('agency', 'for_participant')
+    list_display = ('title', u'id', 'agency')
 admin.site.register(Curriculum, CurriculumAdmin)
 
 
@@ -114,13 +113,13 @@ class PageAdmin(admin.ModelAdmin):
         'level',
         'section',
         'markdown',
-        'display_welcome_video',
+        'display_coach_welcome_video',
         'es_title',
         'es_markdown',
         'nxt',
         'prv',
     )
-    list_filter = ('curriculum', 'level', 'section', 'display_welcome_video')
+    list_filter = ('curriculum', 'level', 'section', 'display_coach_welcome_video')
     formfield_overrides = {
         models.TextField: {'widget': AdminPagedownWidget },
     }
