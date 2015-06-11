@@ -117,8 +117,22 @@ class Error(models.Model, TrackingFieldsMixin):
 class ClinicalNote(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin):
     note = models.TextField(help_text='This is a general note')
 
-class ContactLog(models.Model)
+class ContactLog(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin)
+    datetime = models.DateTimeField(verbose_name="Date and time of contact, (Y-m-d H:M)")
+    CONTACT_TYPES = (
+        (0, "Phone call"),
+        (1, "Video call"),
+        (2, "Text"),
+        (3, "Email"),
+        (4, "Private message in program"),
+        (5, "Home visit"),
+        (6, "Face to face (outside home visit)"),
+        (7, "Other"),
+    )
+    type_of_contact = models.IntegerField(max_length=1,default=7,choices=CONTACT_TYPES,verbose_name='How were they contacted?')
 
+    class Meta:
+        ordering = ['date_of_contact']
 
 class Curriculum(models.Model):
     title = models.CharField(max_length=255)
