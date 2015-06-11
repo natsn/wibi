@@ -60,7 +60,7 @@ class SectionSerializer(serializers.HyperlinkedModelSerializer):
 class PageSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = Page
- 		fields = ('level', 'section', 'title', 'html', 'display_welcome_video', 'es_title', 'es_html')
+ 		fields = ('level', 'section', 'title', 'markdown', 'display_welcome_video', 'es_title', 'es_markdown')
 
 class EdgeSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
@@ -85,7 +85,7 @@ class TipSerializer(serializers.HyperlinkedModelSerializer):
 class CustomPageSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = CustomPage
- 		fields = ('html', 'es_html')
+ 		fields = ('markdown', 'es_markdown')
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
