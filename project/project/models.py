@@ -9,6 +9,10 @@ class TrackingFieldsMixin():
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+class TitleMixin():
+    def __unicode__(self):
+        return self.title
+
 # General Models
 
 class Media(models.Model, TrackingFieldsMixin):
@@ -134,12 +138,12 @@ class ContactLog(models.Model, TrackingFieldsMixin):
     class Meta:
         ordering = ['date_and_time_of_contact']
 
-class Curriculum(models.Model):
+class Curriculum(models.Model, TitleMixin):
     title = models.CharField(max_length=255)
     agency = models.ForeignKey(Agency)
     for_participant = models.BooleanField(default=False, help_text='Viewable by the participant.')
 
-class Level(models.Model, TranslatedModelMixin):
+class Level(models.Model, TranslatedModelMixin, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)
     es_title = models.CharField(max_length=255)
@@ -149,17 +153,14 @@ class Level(models.Model, TranslatedModelMixin):
     class Meta:
         ordering = ('position',)
 
-    def __str__(self):
-        return self.title
-
-class Section(models.Model, TranslatedModelMixin):
+class Section(models.Model, TranslatedModelMixin, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)
     es_title = models.CharField(max_length=255)
     language_code = 'en'
     translated_fields = ['title']
 
-class Page(models.Model, TranslatedModelMixin):
+class Page(models.Model, TranslatedModelMixin, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
     level = models.ForeignKey(Level)
     section = models.ForeignKey(Section)

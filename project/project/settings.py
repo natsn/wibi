@@ -1,4 +1,8 @@
 import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'zzje5!a(=&0cd$#_##uj**a)f3#v66yrt)%k-nu@o4qlp^abh7'
 DEBUG = True
@@ -14,6 +18,7 @@ INSTALLED_APPS = (
     'project',
     'rest_framework',
     'django_extensions',
+    'pagedown',
 )
 REST_FRAMEWORK = {
 # http://www.django-rest-framework.org/api-guide/permissions/
