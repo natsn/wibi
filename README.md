@@ -36,7 +36,7 @@ project/
 ```
 
 #### Schema Design
-
+![Schema](project/erd.png?raw=true)
 
 #### Backend Docs
  - [Django REST](http://www.django-rest-framework.org/)
