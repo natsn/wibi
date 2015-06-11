@@ -1,19 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from utils.mixins import TranslatedModelMixin
+from utils.mixins import TranslatedModelMixin, TrackingFieldsMixin, TitleMixin
 import pytz
-
-# Field Mixins
-
-class TrackingFieldsMixin():
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-class TitleMixin():
-    def __unicode__(self):
-        return self.title
-
-# General Models
 
 class Media(models.Model, TrackingFieldsMixin):
     file = models.FileField(upload_to = u'uploads/')
@@ -166,7 +154,7 @@ class Page(models.Model, TranslatedModelMixin, TitleMixin):
     section = models.ForeignKey(Section)
     title = models.CharField(max_length=255)
     markdown = models.TextField()
-    display_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
+    display_coach_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
     es_title = models.CharField(max_length=255)
     es_markdown  = models.TextField()
     prv = models.ForeignKey('self',related_name='previous_page')
@@ -206,8 +194,12 @@ class Question(models.Model, TranslatedModelMixin):
     es_text = models.CharField(max_length=1000,blank=False)
     language_code = 'en'
     translated_fields = ['text']
+
     class Meta:
         ordering = ['position']
+
+    def __unicode__(self):
+        return self.text
 
 class Choice(models.Model, TranslatedModelMixin):
     question = models.ForeignKey(Question)
@@ -215,13 +207,16 @@ class Choice(models.Model, TranslatedModelMixin):
     feedback = models.CharField(max_length=1000,blank=True)
     correct = models.BooleanField(blank=False,default=False,help_text="Is this a correct answer?")
     position = models.IntegerField()
-
     es_text = models.CharField(max_length=1000,blank=False)
     es_feedback = models.CharField(max_length=1000,blank=True)
     language_code = 'en'
     translated_fields = ['text']
+
     class Meta:
         ordering = ['position']
+
+    def __unicode__(self):
+        return self.text
 
 class Response(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
@@ -246,3 +241,9 @@ class Response(models.Model, TrackingFieldsMixin):
         if list(self.selected) == list(correct_answers):
             all_correct = True
         return all_correct
+
+    def __unicode__(self):
+        if self.text:
+            return self.text
+        else:
+            return self.choice_pks
