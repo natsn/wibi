@@ -5,19 +5,14 @@ import pytz
 
 # Field Mixins
 
-class ParticipantCoachFieldsMixin(models,Model):
-    coach = models.ForeignKey(User, related_name='coach')
-    participant = models.ForeignKey(User, related_name='participant')
-    class Meta:
-        abstract = True
-
-class TrackingFieldsMixin(models.Model):
+class TrackingFieldsMixin():
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    class Meta:
-        abstract = True
 
 # General Models
+
+class Media(models.Model, TrackingFieldsMixin):
+    file = models.FileField(upload_to = u'uploads/')
 
 class VideoUpload(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
@@ -113,12 +108,17 @@ class PageVisit(models.Model, TrackingFieldsMixin):
 class Error(models.Model, TrackingFieldsMixin):
     user = models.ForeignKey(User)
     text = models.TextField()
+    url = models.CharField(max_length=255)
 
-class ClinicalNote(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin):
+class ClinicalNote(models.Model, TrackingFieldsMixin):
+    coach = models.ForeignKey(User, related_name='cn_coach')
+    participant = models.ForeignKey(User, related_name='cn_participant')
     note = models.TextField(help_text='This is a general note')
 
-class ContactLog(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin)
-    datetime = models.DateTimeField(verbose_name="Date and time of contact, (Y-m-d H:M)")
+class ContactLog(models.Model, TrackingFieldsMixin):
+    coach = models.ForeignKey(User, related_name='cl_coach')
+    participant = models.ForeignKey(User, related_name='cl_participant')
+    date_and_time_of_contact = models.DateTimeField(verbose_name="Date and time of contact, (Y-m-d H:M)")
     CONTACT_TYPES = (
         (0, "Phone call"),
         (1, "Video call"),
@@ -132,7 +132,7 @@ class ContactLog(models.Model, TrackingFieldsMixin, ParticipantCoachFieldsMixin)
     type_of_contact = models.IntegerField(max_length=1,default=7,choices=CONTACT_TYPES,verbose_name='How were they contacted?')
 
     class Meta:
-        ordering = ['date_of_contact']
+        ordering = ['date_and_time_of_contact']
 
 class Curriculum(models.Model):
     title = models.CharField(max_length=255)
@@ -178,9 +178,6 @@ class Edge(models.Model):
 class Permission(models.Model, TrackingFieldsMixin):
     page = models.ForeignKey(Page)
     user = models.ForeignKey(User)
-
-class Media(models.Model, TrackingFieldsMixin):
-    file = models.FileField(upload_to = u'uploads/')
 
 class Tip(models.Model, TranslatedModelMixin):
     curriculum = models.ForeignKey(Curriculum)
