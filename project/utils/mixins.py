@@ -1,3 +1,7 @@
+class TitleMixin():
+    def __unicode__(self):
+        return self.title
+
 class TranslatedModelMixin(object):
     """
     Given a translated model, overwrites the original language with
