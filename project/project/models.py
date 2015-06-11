@@ -164,12 +164,12 @@ class Page(models.Model, TranslatedModelMixin):
     level = models.ForeignKey(Level)
     section = models.ForeignKey(Section)
     title = models.CharField(max_length=255)
-    html = models.TextField()
+    markdown = models.TextField()
     display_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
     es_title = models.CharField(max_length=255)
-    es_html  = models.TextField()
+    es_markdown  = models.TextField()
     language_code = 'en'
-    translated_fields = ['title', 'html']
+    translated_fields = ['title', 'markdown']
 
 class Edge(models.Model):
     u = models.ForeignKey(Page,related_name='from_page')
@@ -187,10 +187,10 @@ class Tip(models.Model, TranslatedModelMixin):
     translated_fields = ['text']
 
 class CustomPage(models.Model, TranslatedModelMixin):
-    html = models.TextField()
-    es_html = models.TextField()
+    markdown = models.TextField()
+    es_markdown = models.TextField()
     language_code = 'en'
-    translated_fields = ['html']
+    translated_fields = ['markdown']
 
 class Question(models.Model, TranslatedModelMixin):
     page = models.ForeignKey(Page)
