@@ -31,13 +31,13 @@ class ProfileAdmin(admin.ModelAdmin):
         u'id',
         'user',
         'agency',
-        'media',
+        'coach_welcome_video',
         'higher_up',
         'language',
         'type',
         'timezone',
     )
-    list_filter = ('user', 'agency', 'media', 'higher_up')
+    list_filter = ('user', 'agency', 'coach_welcome_video', 'higher_up')
 admin.site.register(Profile, ProfileAdmin)
 
 
@@ -100,8 +100,7 @@ admin.site.register(Level, LevelAdmin)
 
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('title', u'id', 'curriculum', 'es_title')
-    list_filter = ('curriculum',)
+    list_display = ('title', u'id', 'es_title')
 admin.site.register(Section, SectionAdmin)
 
 
@@ -109,7 +108,6 @@ class PageAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         u'id',
-        'curriculum',
         'level',
         'section',
         'markdown',
@@ -119,7 +117,7 @@ class PageAdmin(admin.ModelAdmin):
         'nxt',
         'prv',
     )
-    list_filter = ('curriculum', 'level', 'section', 'display_coach_welcome_video')
+    list_filter = ('level', 'section', 'display_coach_welcome_video')
     formfield_overrides = {
         models.TextField: {'widget': AdminPagedownWidget },
     }
