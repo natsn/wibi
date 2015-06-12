@@ -32,7 +32,7 @@ class Agency(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
-    media = models.ForeignKey(Media, help_text="Upload Coach Welcome Video as media, then link it here.")
+    coach_welcome_video = models.FileField(upload_to = u'coach_welcome_videos/')
     higher_up = models.ForeignKey('self', blank=True, null=True)
     LANGS = (
         ('en', 'English'),
@@ -186,7 +186,6 @@ class Level(models.Model, TranslatedModelMixin, TitleMixin):
         return list
 
 class Section(models.Model, TitleMixin):
-    curriculum = models.ForeignKey(Curriculum)
     title = models.CharField(max_length=255)
     es_title = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
@@ -195,9 +194,8 @@ class Section(models.Model, TitleMixin):
     translated_fields = ['title']
 
 class Page(models.Model, TitleMixin):
-    curriculum = models.ForeignKey(Curriculum)
     level = models.ForeignKey(Level)
-    section = models.ForeignKey(Section)
+    section = models.ForeignKey(Section,null=True)
     title = models.CharField(max_length=255)
     markdown = models.TextField()
     display_coach_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
