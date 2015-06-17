@@ -50,7 +50,7 @@ class AgencySerializer(serializers.HyperlinkedModelSerializer):
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
  		model = Profile
- 		fields = ('user', 'agency', 'higher_up', 'language', 'type', 'media', 'timezone')
+ 		fields = ('user', 'agency', 'higher_up', 'language', 'type', 'timezone')
 
 class SectionSerializer(serializers.HyperlinkedModelSerializer):
  	class Meta:
