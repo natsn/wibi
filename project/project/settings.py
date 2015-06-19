@@ -20,12 +20,15 @@ INSTALLED_APPS = (
     'django_extensions',
     'pagedown',
 )
-REST_FRAMEWORK = {
-# http://www.django-rest-framework.org/api-guide/permissions/
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
-    ]
-}
+#REST_FRAMEWORK = {
+#   'DEFAULT_AUTHENTICATION_CLASSES': (
+#       'rest_framework.authentication.TokenAuthentication',
+#   ),
+#   'DEFAULT_PERMISSION_CLASSES': (
+#        'rest_framework.permissions.IsAdminUser',
+#        'rest_framework.permissions.IsAuthenticated',
+#   ),
+#}
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

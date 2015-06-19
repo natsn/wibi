@@ -2,10 +2,16 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from project.models import *
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'groups')
+        fields = ('id', 'username', 'password', 'first_name',
+                  'last_name', 'email')
+
+    def restore_object(self, attrs, instance=None):
+        user = super(UserSerializer, self).restore_object(attrs, instance)
+        user.set_password(attrs['password'])
+        return user
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
