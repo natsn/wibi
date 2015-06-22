@@ -1,0 +1,17 @@
+  <div class="container">
+        <div ng-controller="authController" class="login login-container">
+            <center>
+              <img class="img-responsive" src="https://epals2.ori.org/static/img/epals2-logo.svg" />
+            </center>
+            <br />
+                <div class='alert {{alert_type}}' ng-show="message">{{message}}</div>
+            <br />
+            <form class="form-signin" id="id_auth_form" ng-submit="login()">
+                <input type="text" ng-model="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                <input type="password" ng-model="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <input type="submit" class="btn btn-lg btn-primary btn-block btn-signin" value="Submit">
+                </br></br>
+                <center><a href="/">About</a> </center>
+            </form>
+        </div>
+    </div>

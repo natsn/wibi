@@ -1,10 +1,38 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login, logout
 from rest_framework import viewsets
+from rest_framework.response import Response
 from project.serializers import *
+from . import authenticators
 from django.http import HttpResponse
 from project.models import *
+import json
+
+def user_login(request):
+    response_data = {}
+    print request.body
+    incoming_data = json.loads(request.body)
+    username = incoming_data['username']
+    password = incoming_data['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            results = login(request, user)
+            response_data['message'] = "Authenticated"
+            response_data['success'] = 1
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        else:
+            response_data['message'] = "User not active"
+            response_data['success'] = 0
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        response_data['message'] = "Login failed"
+        response_data['success'] = 0
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
