@@ -1,61 +1,58 @@
 var app = angular.module('wibiAngApp', ['ngRoute', 'ngResource'])
 
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.
     when('/', {
       templateUrl: '/static/templates/login.html',
       controller: 'authController'
+    }).
+    when('/particpant/', {
+      templateUrl: '/static/templates/participant.html',
+      controller: 'partiController'
+    }).
+    when('/coach/', {
+      templateUrl: '/static/templates/coach.html',
+      controller: 'coachController'
+    }).
+    when('/trainer/', {
+      templateUrl: '/static/templates/trainer.html',
+      controller: 'trainerController'
     })
     $locationProvider.html5Mode(true); //enables url change abilities without refreshing browser
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }]);
 
-app.config(['$httpProvider', function($httpProvider){
-        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-    }])
 
-app.service('authState', function () {
-        return {
-            //redirect the user to login form
-        };
-    })
+app.controller('authController', ['$scope', '$http', '$location', function($scope, $http, $location){
+    $scope.message = '';
+    $scope.alert_type = ""
+    $scope.login = function(){
+        var data = {'username':$scope.username, 'password':$scope.password};
+        console.log(data)
+        $http.post('/login/', data).
+          success(function(data, status, headers, config) {
+            if(data.success){
+                $scope.alert_type = "alert-success"
+                $scope.message = data.message;
+                $location.path('/particpant/');
+                console.log('yeah!'); // Change the UI
+            } else {
+                $scope.alert_type = "alert-danger"
+                $scope.message = data.message;
+                console.log('NOOO!!'); // Display message
+            }
+            // this callback will be called asynchronously
+            // when the response is available
+          }).
+          error(function(data, status, headers, config) {
+            console.log('crap!')
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+          });
+    };
+}]);
 
-app.factory('api', function($resource){
-        function add_auth_header(data, headersGetter){
-            var headers = headersGetter();
-            headers['Authorization'] = ('Basic ' + btoa(data.username +
-                                        ':' + data.password));
-        }
-        return {
-            auth: $resource('/api/auth\\/', {}, {
-                login:  {method: 'POST', transformRequest: add_auth_header},
-                logout: {method: 'DELETE'}
-            }),
-        };
-    })
-
-app.controller('authController', function($scope, api, authState) {
-        
-        $('#id_auth_form input').checkAndTriggerAutoFillEvent();
-
-        $scope.authState = authState;
-
-        $scope.getCredentials = function(){
-            return {username: $scope.username, password: $scope.password};
-        };
-        $scope.login = function(){
-            api.auth.login($scope.getCredentials()).
-                $promise.
-                    then(function(data){
-                        authState.user = data.username;
-                    }).
-                    catch(function(data){
-                        alert(data.data.detail);
-                    });
-        };
-        $scope.logout = function(){
-            api.auth.logout(function(){
-                authState.user = undefined;
-            });
-        };
-    });
+app.controller('partiController', ['$scope', function($scope){
+    $scope.username = 'testing';
+}]);

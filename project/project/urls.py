@@ -26,7 +26,8 @@ router.register(r'response', views.ResponseViewSet)
 
 urlpatterns = patterns('',
     url(r'^api/', include(router.urls)),
-    url(r'^api/auth/$', views.AuthView.as_view(), name='authenticate'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^login/', 'project.views.user_login', name='user_login'),
+    url(r'^particpant/', 'project.views.user_login', name='user_login'),
     url(r'^.*$', 'project.views.home', name='home'),
 )
