@@ -55,6 +55,8 @@ class Profile(models.Model):
 
     current_page = models.IntegerField(default=1, help_text="This field starts at 1 so the user can access the first page of the curriculum. It is automatically incremented upon viewing a page IFF (1) page.position-1=current_page and (2) page.level = current_page.level. Otherwise it can be set by the higher_up to be level.first_page.position.")
 
+    highest_badge_earned = models.IntegerField(default=0, help_text="This field starts at 0, upon viewing a badge earning padge, this will change to the position of the level of that page (if that position is greater than the current value).")
+
     def belongs_to(self, profile):
         """
             This function determines if a user is associated with another user.
@@ -157,24 +159,6 @@ class Curriculum(models.Model, TitleMixin):
     agency = models.ForeignKey(Agency)
     language = models.CharField(max_length=4,help_text='What language is this curriculum in?')
 
-class CurriculumAndProfile(models.Model):
-    """
-        This table distinguishes which profile's have access to which curriculum.
-        A coach may have access to a home visitor training course and PALS. Participants
-        will probably just have access to one curriculum (ePALS1 or ePALS2)
-    """
-    curriculum = models.ForeignKey(Curriculum)
-    profile = models.ForeignKey(Profile)
-
-class Badge(models.Model):
-    """
-        A badge is just a link between a level and a user.
-        Existence of this link implies the level badge was earned by the user.
-        These should be unique. A user should not have earned the completion badge for a level twice.
-    """
-    level = models.ForeignKey(Level)
-    user = models.ForeignKey(User)
-
 class Level(models.Model, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
     badge = models.ForeignKey(Media)
@@ -192,6 +176,15 @@ class Level(models.Model, TitleMixin):
             list.append(curr)
             curr = curr.nxt
         return list
+
+class CurriculumAndProfile(models.Model):
+    """
+        This table distinguishes which profile's have access to which curriculum.
+        A coach may have access to a home visitor training course and PALS. Participants
+        will probably just have access to one curriculum (ePALS1 or ePALS2)
+    """
+    curriculum = models.ForeignKey(Curriculum)
+    profile = models.ForeignKey(Profile)
 
 class Section(models.Model, TitleMixin):
     title = models.CharField(max_length=255)
