@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework import viewsets
 from rest_framework.response import Response
 from project.serializers import *
-from . import authenticators
 from django.http import HttpResponse
 from project.models import *
 import json

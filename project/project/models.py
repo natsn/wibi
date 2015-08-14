@@ -1,7 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
-from utils.mixins import TranslatedModelMixin, TitleMixin
+from utils.mixins import TitleMixin
 import pytz
+
+
+# 28 models - 28 tables
+# 31 relations - 31 Foreignkeys
 
 class Media(models.Model):
     file = models.FileField(upload_to = u'uploads/')
@@ -32,7 +36,7 @@ class Agency(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     agency = models.ForeignKey(Agency)
-    coach_welcome_video = models.FileField(upload_to = u'coach_welcome_videos/')
+    welcome_video = models.ForeignKey(Media, help_text="If this is a coach/trainer, reference their welcome video here")
     higher_up = models.ForeignKey('self', blank=True, null=True)
     LANGS = (
         ('en', 'English'),
@@ -43,17 +47,13 @@ class Profile(models.Model):
     TYPES = (
         ('P', 'Participant'),
         ('C', 'Coach'),
-        ('T', 'Trainer/Consultant'),
+        ('T', 'Trainer'),
     )
     type = models.CharField(max_length=1, choices=TYPES, default='P')
     TIMEZONES = [(tz,tz) for tz in pytz.all_timezones]
     timezone = models.CharField(max_length=100, choices=TIMEZONES, default='US/Pacific')
 
-    def furthest_page_viewed(self, curriculum):
-        # TODO Traverse linked list, compare to permissions
-        my_perms = Permission.objects.filter(user=self)
-        pages = Page.objects.filter(curriculum=curriculum)
-
+    current_page = models.IntegerField(default=1, help_text="This field starts at 1 so the user can access the first page of the curriculum. It is automatically incremented upon viewing a page IFF (1) page.position-1=current_page and (2) page.level = current_page.level. Otherwise it can be set by the higher_up to be level.first_page.position.")
 
     def belongs_to(self, profile):
         """
@@ -155,6 +155,7 @@ class ContactLog(models.Model):
 class Curriculum(models.Model, TitleMixin):
     title = models.CharField(max_length=255)
     agency = models.ForeignKey(Agency)
+    language = models.CharField(max_length=4,help_text='What language is this curriculum in?')
 
 class CurriculumAndProfile(models.Model):
     """
@@ -165,13 +166,20 @@ class CurriculumAndProfile(models.Model):
     curriculum = models.ForeignKey(Curriculum)
     profile = models.ForeignKey(Profile)
 
-class Level(models.Model, TranslatedModelMixin, TitleMixin):
+class Badge(models.Model):
+    """
+        A badge is just a link between a level and a user.
+        Existence of this link implies the level badge was earned by the user.
+        These should be unique. A user should not have earned the completion badge for a level twice.
+    """
+    level = models.ForeignKey(Level)
+    user = models.ForeignKey(User)
+
+class Level(models.Model, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
+    badge = models.ForeignKey(Media)
     title = models.CharField(max_length=255)
-    es_title = models.CharField(max_length=255)
-    position = models.IntegerField(default=1, help_text='What level/session is this?')
-    language_code = 'en'
-    translated_fields = ['title']
+    position = models.IntegerField(default=1, help_text='What level is this?')
 
     class Meta:
         ordering = ['position']
@@ -187,11 +195,9 @@ class Level(models.Model, TranslatedModelMixin, TitleMixin):
 
 class Section(models.Model, TitleMixin):
     title = models.CharField(max_length=255)
-    es_title = models.CharField(max_length=255)
+    curriculum = models.ForeignKey(Curriculum)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    language_code = 'en'
-    translated_fields = ['title']
 
 class Page(models.Model, TitleMixin):
     level = models.ForeignKey(Level)
@@ -199,36 +205,24 @@ class Page(models.Model, TitleMixin):
     title = models.CharField(max_length=255)
     markdown = models.TextField()
     display_coach_welcome_video = models.BooleanField(default=False, help_text="By checking this the user will see their higher_up's welcome video if available.")
-    es_title = models.CharField(max_length=255)
-    es_markdown  = models.TextField()
-    prv = models.ForeignKey('self',related_name='previous_page',null=True)
-    nxt = models.ForeignKey('self',related_name='next_page',null=True)
+    badge_earning = models.BooleanField(default=False, help_text="If checked, participants will earn the level badge upon viewing this page.")
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    language_code = 'en'
-    translated_fields = ['title', 'markdown']
+    position = models.IntegerField(default=1, help_text='What page is this?')
+
+    class Meta:
+        ordering = ['position']
 
 
-
-class Permission(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    page = models.ForeignKey(Page)
-    user = models.ForeignKey(User)
-
-class Tip(models.Model, TranslatedModelMixin):
+class Tip(models.Model, TitleMixin):
     curriculum = models.ForeignKey(Curriculum)
-    text = models.CharField(max_length=255)
-    es_text = models.CharField(max_length=255)
-    language_code = 'en'
-    translated_fields = ['text']
+    title = models.CharField(max_length=255)
 
-class CustomPage(models.Model, TranslatedModelMixin):
+class CustomPage(models.Model, TitleMixin):
+    title = models.CharField(max_length=255)
     markdown = models.TextField()
-    es_markdown = models.TextField()
-    language_code = 'en'
-    translated_fields = ['markdown']
 
-class Question(models.Model, TranslatedModelMixin):
+class Question(models.Model):
     page = models.ForeignKey(Page)
     text = models.CharField(max_length=1000,blank=False)
     TYPES = (
@@ -238,11 +232,7 @@ class Question(models.Model, TranslatedModelMixin):
     )
     type = models.CharField(max_length=2,choices=TYPES)
     is_scoreable = models.BooleanField(default=True,help_text="Will the answer to this question be scored?")
-    position = models.IntegerField()
-
-    es_text = models.CharField(max_length=1000,blank=False)
-    language_code = 'en'
-    translated_fields = ['text']
+    position = models.IntegerField(default=1, help_text="What question is this on the page?")
 
     class Meta:
         ordering = ['position']
@@ -250,16 +240,12 @@ class Question(models.Model, TranslatedModelMixin):
     def __unicode__(self):
         return self.text
 
-class Choice(models.Model, TranslatedModelMixin):
+class Choice(models.Model):
     question = models.ForeignKey(Question)
     text = models.CharField(max_length=1000,blank=False)
     feedback = models.CharField(max_length=1000,blank=True)
     correct = models.BooleanField(blank=False,default=False,help_text="Is this a correct answer?")
-    position = models.IntegerField()
-    es_text = models.CharField(max_length=1000,blank=False)
-    es_feedback = models.CharField(max_length=1000,blank=True)
-    language_code = 'en'
-    translated_fields = ['text']
+    position = models.IntegerField(default=1, help_text="What choice is this?")
 
     class Meta:
         ordering = ['position']
@@ -274,7 +260,7 @@ class Response(models.Model):
     modified = models.DateTimeField(auto_now=True)
     choice_pks = models.CommaSeparatedIntegerField(max_length=255)
     text = models.TextField()
-    attempt = models.IntegerField(default=1)
+    attempt = models.IntegerField(default=1, help_text="Is this the 1st attempt? 2nd attempt?s")
 
     @property
     def selected(self):
